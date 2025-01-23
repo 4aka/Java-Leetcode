@@ -9,12 +9,11 @@ public class LongestCommonPrefix {
         System.out.println(res);
     }
 
-    public static List<List<String>> data(String[] strs) {
-        List<String> sortedWords = Arrays
-                .stream(strs)
-                .sorted()
-                .collect(Collectors.toList());
+    public static String longestCommonPrefix(String[] strs) {
+        String prefix = ""; String tmp = "";
 
+        // Data preparation
+        List<String> sortedWords = Arrays.stream(strs).sorted().collect(Collectors.toList());
         Map<Character, List<String>> groupedMap = new TreeMap<>();
 
         for (String word : sortedWords) {
@@ -22,34 +21,27 @@ public class LongestCommonPrefix {
             groupedMap.putIfAbsent(startLetter, new ArrayList<>());
             groupedMap.get(startLetter).add(word);
         }
-        return new ArrayList<>(groupedMap.values());
-    }
+        List<List<String>> data = new ArrayList<>(groupedMap.values());
 
-    public static String longestCommonPrefix(String[] strs) {
-        String prefix = "";
-        String tmp = "";
-
-        for (List<String> words : data(strs)) {
+        for (List<String> words : data) {
 
             // Find prefix length of the shortest word
-            int maxWordLen = words.stream()
-                    .mapToInt(String::length).max().getAsInt();
-            String maxWord = words.stream()
-                    .filter(w -> w.length() == maxWordLen)
+            int maxWordLen = words.stream().mapToInt(String::length).max().getAsInt();
+            String maxWord = words.stream().filter(w -> w.length() == maxWordLen)
                     .collect(Collectors.toList()).get(0);
 
             // Algorithm
             for (String word : words) {
                 String tmpWord = maxWord;
                 for (int i = maxWord.length() - 1; i > 0; i--) {
-
                     if (word.startsWith(tmpWord) && !word.equals(maxWord)) { tmp = tmpWord; }
                     else { tmpWord = tmpWord.substring(0, i); }
                 }
             }
+
             // Compare prefixes
             if (tmp.length() > prefix.length()) {
-                prefix = tmp.toString();
+                prefix = tmp;
             }
         }
         return prefix;
