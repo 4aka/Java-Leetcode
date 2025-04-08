@@ -23,7 +23,7 @@ public class GenerateStrongPass {
         String pass = "";
         do {
             pass = generateSymbols(len);
-        } while (pass.equals(ERROR_MESSAGE));
+        } while (pass.equals(ERROR_MESSAGE)); // Error ocures ~10 times for 1000 passwords
         return pass;
     }
 
